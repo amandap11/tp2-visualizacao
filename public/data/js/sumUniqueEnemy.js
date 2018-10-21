@@ -1,4 +1,4 @@
-[
+let inimigosUnicos = [
   {
     "ID": "Pakistan",
     "Enemies": "56",

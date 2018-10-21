@@ -1,3 +1,8 @@
-body {
-  font-family: 'Indie Flower', cursive;
+#index {
+  /*font-family: 'Indie Flower', cursive;*/
+  text-align: center;
+}
+
+#visualizacao1 {
+  height: 550px;
 }

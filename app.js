@@ -6,14 +6,14 @@ let path = require('path');
 
 let fs = require('fs');
 
-let db = {
+/*let db = {
 	node: JSON.parse(fs.readFileSync(__dirname + "/data/json/node.json")),
   NovoEdges: JSON.parse(fs.readFileSync(__dirname + "/data/json/NovoEdges.json")),
   sumAllAlies: JSON.parse(fs.readFileSync(__dirname + "/data/json/sumAllAlies.json")),
   sumAllEnemies: JSON.parse(fs.readFileSync(__dirname + "/data/json/sumAllEnemies.json")),
   sumUniqueAlly: JSON.parse(fs.readFileSync(__dirname + "/data/json/sumUniqueAlly.json")),
   sumUniqueEnemy: JSON.parse(fs.readFileSync(__dirname + "/data/json/sumUniqueEnemy.json"))
-};
+};*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,11 +25,15 @@ let server = app.listen(process.env.PORT || 3000, function () {
 });
 
 app.get('/', function(request, response) {
-  response.render('index', db.dados);
+  response.render('index');
 });
 
-/*app.get('/login', function(request, response) {
-  response.render('login');
-});*/
+app.get('/visualizacao1', function(request, response) {
+  response.render('visualizacao1');
+});
+
+app.get('/visualizacao2', function(request, response) {
+  response.render('visualizacao2');
+});
 
 module.exports = app;

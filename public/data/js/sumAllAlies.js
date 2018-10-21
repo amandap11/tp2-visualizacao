@@ -1,4 +1,4 @@
-[
+let aliados = [
   {
     "ID": "Lithuania",
     "Allies": "104",

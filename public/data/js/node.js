@@ -1,4 +1,4 @@
-[
+let nodes = [
   {
     "0": "Asia",
     "Id": "AFG",

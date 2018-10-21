@@ -1,4 +1,4 @@
-[
+let inimigos = [
   {
     "ID": "Lithuania",
     "Enemies": "44",

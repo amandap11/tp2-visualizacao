@@ -1,4 +1,4 @@
-[
+let edges = [
   {
     "SourceID": "Lithuania",
     "TargetID": "Sweden",

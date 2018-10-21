@@ -1,4 +1,4 @@
-[
+let aliadosUnicos = [
   {
     "ID": "United States",
     "Enemies": "114",
