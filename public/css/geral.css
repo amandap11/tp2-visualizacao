@@ -6,3 +6,11 @@
 #visualizacao1 {
   height: 550px;
 }
+
+h2 {
+  text-align: center;
+}
+
+.pesquisa {
+  margin-top: 5px; 
+}
