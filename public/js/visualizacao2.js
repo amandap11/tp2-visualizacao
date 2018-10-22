@@ -1,9 +1,26 @@
 let duracaoConflitos = ['Duration'];
 let nomesConflitos = [];
 
-window.onload = ranking(10);
+let quant = document.querySelector('#quantElementos').value;
+//let ord = document.querySelector('#ordenado').checked;
+let ord = true;
 
-function ranking(quantidade){
+document.querySelector('#quantElementos').addEventListener('change', function(e) {
+  ranking(e.target.value, ord);
+}, false);
+
+/*document.querySelector('#ordenado').addEventListener('change', function(e) {
+  console.log(e.target.checked);
+  ranking(quant, e.target.checked);
+}, false);*/
+
+
+window.onload = ranking(quant, ord);
+
+function ranking(quantidade, ordenacao){
+
+  duracaoConflitos = ['Duration'];
+  nomesConflitos = [];
 
   let dataFim = Number(2018);
   let dataInicio;
