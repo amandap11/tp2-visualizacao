@@ -22,7 +22,7 @@ function ranking(quantidade, ordenacao){
   duracaoConflitos = ['Duration'];
   nomesConflitos = [];
 
-  let dataFim = Number(2018);
+  let dataFim;
   let dataInicio;
 
   let novoVetor = [];
@@ -30,34 +30,73 @@ function ranking(quantidade, ordenacao){
 
   for (let i = 0; i < edges.length; i++){
     dataInicio = Number(edges[i].year_start);
-    if (edges[i].year_end != "Ongoing"){
-      dataFim = Number(edges[i].year_end);
+    if (edges[i].year_end == "Ongoing"){
+      dataFim = 2018;
+    } else {
+      dataFim = edges[i].year_end;
     }
+    let d = Number(dataFim) - dataInicio;
     aux = {
-      "country1": edges[i].SourceID,
-      "country2": edges[i].TargetID,
-      "conflict_name": edges[i].conflict_name,
-      "duration": dataFim - dataInicio
+      //"country1": edges[i].SourceID,
+      //"country2": edges[i].TargetID,
+      "nomeConflito": edges[i].conflict_name,
+      "duracao": d
     }
     novoVetor.push(aux);
   }
 
   novoVetor = ordena(novoVetor);
+  novoVetor = agrupaConflitos(novoVetor);
+
+  let max = Math.min(quantidade, novoVetor.length);
 
   for (let i = 0; i < quantidade; i++){
-    duracaoConflitos.push(novoVetor[i].duration);
-    nomesConflitos.push(novoVetor[i].conflict_name);
+    duracaoConflitos.push(novoVetor[i].duracao);
+    nomesConflitos.push(novoVetor[i].nomeConflito);
   }
 
   desenha();
 
 }
 
+function agrupaConflitos(vetor){
+
+  let conflitos = [];
+
+  let aux = {
+    duracao: vetor[0].duracao,
+    nomeConflito: vetor[0].nomeConflito
+  };
+
+  conflitos.push(aux);
+
+  let repetido = false;
+  for (let i = 1; i < vetor.length; i++){
+    aux = null;
+    repetido = false;
+    for (let j = 0; j < conflitos.length; j++){
+      if (vetor[i].nomeConflito == conflitos[j].nomeConflito){
+        repetido = true;
+      }
+    }
+    if (!repetido){
+      aux = {
+        duracao: vetor[i].duracao,
+        nomeConflito: vetor[i].nomeConflito
+      };
+      conflitos.push(aux);
+    }
+  }
+
+  return conflitos;
+
+}
+
 function ordena(vetor){
   // Ordena pela quantidade de relacionamentos
   vetor.sort(function (a, b) {
-    if (Number(a.duration) < Number(b.duration)) { return 1; }
-    if (Number(a.duration) > Number(b.duration)) { return -1; }
+    if (Number(a.duracao) < Number(b.duracao)) { return 1; }
+    if (Number(a.duracao) > Number(b.duracao)) { return -1; }
     return 0;
   });
   return vetor;
@@ -95,13 +134,12 @@ function desenha(){
         categories: nomesConflitos,
         tick: {
           multiline: true
-        },
-        height: 80
+        }
       },
       y: {
         // Foi escolhido um texto e uma posição para o label do eixo y
         label: {
-          text: 'Duração (em anos)',
+          text: 'Duration (in years)',
           position: 'outer-middle'
         }
       },
@@ -110,7 +148,7 @@ function desenha(){
     // Definição da largura das barras (de diferença de votos)
     bar: {
       width: {
-        ratio: 0.6
+        ratio: 0.7
       }
     },
     // Customização da informação exibida ao passar o mouse sobre a visualização
