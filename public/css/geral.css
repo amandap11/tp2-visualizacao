@@ -7,10 +7,26 @@
   height: 550px;
 }
 
+#visualizacao2 {
+  height: 550px;
+}
+
 h2 {
   text-align: center;
 }
 
 .pesquisa {
-  margin-top: 5px; 
+  margin-top: 5px;
+}
+
+#select-filtros {
+  position: absolute;
+  z-index: 1;
+  top: 100px;
+  right: 30px;
+}
+
+#checkbox {
+  padding-left: 20px;
+  margin-bottom: 20px;
 }
