@@ -14,7 +14,6 @@ document.querySelector('#quantElementos').addEventListener('change', function(e)
   ranking(quant, e.target.checked);
 }, false);*/
 
-
 window.onload = ranking(quant, ord);
 
 function ranking(quantidade, ordenacao){

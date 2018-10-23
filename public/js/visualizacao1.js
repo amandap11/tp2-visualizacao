@@ -5,14 +5,25 @@ let colunaPaises;
 let aux;
 let auxNode;
 
+let quant = document.querySelector('#quantElementos').value;
+let string = "";
+
 window.onload = visPadrao;
 
 document.addEventListener('DOMContentLoaded', function() {
-  document.querySelector('#search-input').onkeyup = visFiltro;
+  document.querySelector('#search-input').onkeyup = function (e){
+    string = e.target.value;
+    visFiltro(quant, string);
+  }
 }, false);
 
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#checkboxEmpilhado').onchange = atualizaGrupo;
+}, false);
+
+document.querySelector('#quantElementos').addEventListener('change', function(e) {
+  quant = e.target.value;
+  visFiltro(quant, string);
 }, false);
 
 function visPadrao(){
@@ -44,12 +55,7 @@ function visPadrao(){
 
   aux = ordena(aux);
 
-  let max;
-  if (aux.length > 20){
-    max = 20;
-  } else {
-    max = aux.length;
-  }
+  let max = Math.min(aux.length, quant);
 
   for (let i = 0; i < max; i++){
     colunaAliados.push(aux[i].Allies);
@@ -61,9 +67,9 @@ function visPadrao(){
 
 };
 
-function visFiltro(e){
+function visFiltro(quantidade, pais){
 
-  let pais = e.target.value;
+  //let pais = e.target.value;
 
   colunaAliados = ['Allies'];
   colunaInimigos = ['Enemies'];
@@ -75,12 +81,7 @@ function visFiltro(e){
   aux = preencheAux(pais);
   aux = ordena(aux);
 
-  let max;
-  if (aux.length > 20){
-    max = 20;
-  } else {
-    max = aux.length;
-  }
+  let max = Math.min(aux.length, quantidade);
 
   for (let i = 0; i < max; i++){
     colunaAliados.push(aux[i].Allies);
@@ -226,7 +227,7 @@ function desenhaSeparado(){
     },
     // Define as cores
     color: {
-      pattern: ['#04B404', '#DF3A01']
+      pattern: ['#819FF7', '#FE2E2E']
     },
     // Define se a legenda deve ser exibida e onde deve ser posicionada
     legend: {
