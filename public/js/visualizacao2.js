@@ -188,7 +188,7 @@ function desenhaAgrupado(){
       y: {
         // Foi escolhido um texto e uma posição para o label do eixo y
         label: {
-          text: 'Percentage',
+          text: 'Number of conflicts',
           position: 'outer-middle'
         }
       },
@@ -246,7 +246,7 @@ function desenhaSeparado(){
       y: {
         // Foi escolhido um texto e uma posição para o label do eixo y
         label: {
-          text: 'Percentual',
+          text: 'Number of conflicts',
           position: 'outer-middle'
         }
       },
