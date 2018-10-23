@@ -36,4 +36,8 @@ app.get('/visualizacao2', function(request, response) {
   response.render('visualizacao2');
 });
 
+app.get('/visualizacao3', function(request, response) {
+  response.render('visualizacao3');
+});
+
 module.exports = app;
