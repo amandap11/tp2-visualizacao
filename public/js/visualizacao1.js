@@ -6,7 +6,9 @@ let aux;
 let auxNode;
 
 let quant = document.querySelector('#quantElementos').value;
+let normaliza = document.querySelector('#checkboxNormaliza').checked;
 let string = "";
+let labelMsg =
 
 window.onload = visPadrao;
 
@@ -23,6 +25,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.querySelector('#quantElementos').addEventListener('change', function(e) {
   quant = e.target.value;
+  visFiltro(quant, string);
+}, false);
+
+document.querySelector('#checkboxNormaliza').addEventListener('change', function(e) {
+  normaliza = e.target.checked;
   visFiltro(quant, string);
 }, false);
 
@@ -43,12 +50,24 @@ function visPadrao(){
         break;
       }
     }
-    auxNode = {
-      "ID": aliados[i].ID,
-      "Allies": 100 * (Number(aliados[i].Allies) / (Number(aliados[i].Allies) + Number(e))),
-      "Enemies": 100 * (Number(e) / (Number(aliados[i].Allies) + Number(e))),
-      "Tag": aliados[i].Tag,
-      "Total": Number(e) + Number(aliados[i].Allies)
+    if (normaliza){
+      labelMsg = 'Percentage';
+      auxNode = {
+        "ID": aliados[i].ID,
+        "Allies": 100 * (Number(aliados[i].Allies) / (Number(aliados[i].Allies) + Number(e))),
+        "Enemies": 100 * (Number(e) / (Number(aliados[i].Allies) + Number(e))),
+        "Tag": aliados[i].Tag,
+        "Total": Number(e) + Number(aliados[i].Allies)
+      }
+    } else {
+      labelMsg = 'Number of conflicts';
+      auxNode = {
+        "ID": aliados[i].ID,
+        "Allies": Number(aliados[i].Allies),
+        "Enemies": Number(e),
+        "Tag": aliados[i].Tag,
+        "Total": Number(e) + Number(aliados[i].Allies)
+      }
     }
     aux.push(auxNode);
   }
@@ -120,12 +139,24 @@ function preencheAux(pais){
           break;
         }
       }
-      auxNode = {
-        "ID": aliados[i].ID,
-        "Allies": 100 * (Number(aliados[i].Allies) / (Number(aliados[i].Allies) + Number(e))),
-        "Enemies": 100 * (Number(e) / (Number(aliados[i].Allies) + Number(e))),
-        "Tag": aliados[i].Tag,
-        "Total": Number(e) + Number(aliados[i].Allies)
+      if (normaliza){
+        labelMsg = 'Percentage';
+        auxNode = {
+          "ID": aliados[i].ID,
+          "Allies": 100 * (Number(aliados[i].Allies) / (Number(aliados[i].Allies) + Number(e))),
+          "Enemies": 100 * (Number(e) / (Number(aliados[i].Allies) + Number(e))),
+          "Tag": aliados[i].Tag,
+          "Total": Number(e) + Number(aliados[i].Allies)
+        }
+      } else {
+        labelMsg = 'Number of conflicts';
+        auxNode = {
+          "ID": aliados[i].ID,
+          "Allies": Number(aliados[i].Allies),
+          "Enemies": Number(e),
+          "Tag": aliados[i].Tag,
+          "Total": Number(e) + Number(aliados[i].Allies)
+        }
       }
       vetor.push(auxNode);
     }
@@ -188,7 +219,7 @@ function desenhaAgrupado(){
       y: {
         // Foi escolhido um texto e uma posição para o label do eixo y
         label: {
-          text: 'Percentage',
+          text: labelMsg,
           position: 'outer-middle'
         }
       },
@@ -205,9 +236,6 @@ function desenhaAgrupado(){
       show: true
     }
   });
-
-  // Limita os valores exibidos no eixo y
-  chart1.axis.max({y: 91});
 }
 
 function desenhaSeparado(){
@@ -249,7 +277,7 @@ function desenhaSeparado(){
       y: {
         // Foi escolhido um texto e uma posição para o label do eixo y
         label: {
-          text: 'Percentual',
+          text: labelMsg,
           position: 'outer-middle'
         }
       },
@@ -266,7 +294,4 @@ function desenhaSeparado(){
       show: true
     }
   });
-
-  // Limita os valores exibidos no eixo y
-  chart1.axis.max({y: 91});
 }
