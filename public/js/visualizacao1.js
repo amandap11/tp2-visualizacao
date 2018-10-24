@@ -7,8 +7,9 @@ let auxNode;
 
 let quant = document.querySelector('#quantElementos').value;
 let normaliza = document.querySelector('#checkboxNormaliza').checked;
-let string = "";
-let labelMsg =
+let string = '';
+let labelMsg = '';
+let chart1;
 
 window.onload = visPadrao;
 
@@ -83,8 +84,14 @@ function visPadrao(){
   }
 
   desenhaAgrupado();
-
+  ajustaLimiteEixo();
 };
+
+function ajustaLimiteEixo(){
+  if (normaliza){
+    chart1.axis.max({y: 91});
+  }
+}
 
 function visFiltro(quantidade, pais){
 
@@ -111,10 +118,11 @@ function visFiltro(quantidade, pais){
   let agrupado = document.querySelector('#checkboxEmpilhado').checked;
   if (agrupado){
     desenhaAgrupado();
+    ajustaLimiteEixo();
   } else {
     desenhaSeparado();
+    ajustaLimiteEixo();
   }
-
 
 };
 
@@ -169,14 +177,16 @@ function atualizaGrupo(e){
   console.log(e.target.checked);
   if (e.target.checked){
     desenhaAgrupado();
+    ajustaLimiteEixo();
   } else {
     desenhaSeparado();
+    ajustaLimiteEixo();
   }
 }
 
 function desenhaAgrupado(){
   // Desenha a visualização
-  let chart1 = c3.generate({
+  chart1 = c3.generate({
     // Determina onde desenhar
     bindto: '#visualizacao1',
     // Define os dados que serão exibidos
@@ -240,7 +250,7 @@ function desenhaAgrupado(){
 
 function desenhaSeparado(){
   // Desenha a visualização
-  let chart1 = c3.generate({
+  chart1 = c3.generate({
     // Determina onde desenhar
     bindto: '#visualizacao1',
     // Define os dados que serão exibidos
