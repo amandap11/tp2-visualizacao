@@ -1,5 +1,6 @@
 let edgesBrasil = [];
 
+// Seleção dos relacionamentos do Brasil
 for (let i = 0; i < edges.length; i++){
   if (edges[i].SourceID == 'Brazil'
       || edges[i].TargetID == 'Brazil'){
@@ -13,6 +14,8 @@ let linhaDoTempoBrasilAliados = [];
 
 let linhaDoTempoMundo = [];
 
+// Criação de vetores para armazenar os dados dos conflitos do Brasil e do
+// mundo no formato que poderão ser utilizados para criar as visualizações
 for (let i = 1501; i < 2018; i++){
   linhaDoTempoBrasil.push({
     'ano': i,
@@ -33,6 +36,8 @@ for (let i = 1501; i < 2018; i++){
 let iAliados = 0;
 let iInimigos = 0;
 
+// Preenche o vetor dos relacionamentos do Brasil de acordo com a data dos
+// conflitos e tipo de relacionamento (aliança ou inimizade)
 for (let i = 0; i < edgesBrasil.length; i++){
   for (let j = 0; j < linhaDoTempoBrasil.length; j++){
     if (Number(edgesBrasil[i].year_start) <= linhaDoTempoBrasil[j].ano
@@ -56,6 +61,7 @@ for (let i = 0; i < edgesBrasil.length; i++){
   }
 }
 
+// Preenche o vetor dos relacionamentos do mundo de acordo com a data dos conflitos
 for (let i = 0; i < edges.length; i++){
   for (let j = 0; j < linhaDoTempoMundo.length; j++){
     if (Number(edges[i].year_start) <= linhaDoTempoMundo[j].ano
@@ -77,39 +83,52 @@ let colRelacionamentosMundo = ['World'];
 let colRelacionamentosBrasil = ['Brazil'];
 let colYears = ['Year'];
 
+// Cria o vetor com os números de relacionamentos do Brasil em formato que
+// pode ser usado para criar as visualizações
 for (let i = 0; i < linhaDoTempoBrasil.length; i++){
   colRelacionamentosBrasil.push(linhaDoTempoBrasil[i].relacionamentos);
 }
 
+// Cria o vetor com os números de relacionamentos no mundo em formato que
+// pode ser usado para criar as visualizações
 for (let i = 0; i < linhaDoTempoMundo.length; i++){
   colRelacionamentosMundo.push(linhaDoTempoMundo[i].relacionamentos);
 }
 
+// Converte o ano para utilizá-lo no eixo x
 for (let i = 0; i < linhaDoTempoBrasil.length; i++){
   let stringAno = linhaDoTempoBrasil[i].ano + '-01-01';
   colYears.push(Date.parse(stringAno));
 }
 
+// Desenha da visualização
 var chart = c3.generate({
+  // Define onde a visualização será desenhada
   bindto: '#visualizacao3',
+  // Define os dados da visualização
   data: {
-      columns: [
-        colYears,
-        colRelacionamentosMundo,
-        colRelacionamentosBrasil
-      ],
-      x: 'Year',
-      type: 'line'
+    columns: [
+      colYears,
+      colRelacionamentosMundo,
+      colRelacionamentosBrasil
+    ],
+    x: 'Year',
+    type: 'line'
   },
+  // Define o tamanho dos pontos
   point: {
     r: 1.5,
   },
+  // Define alguns parâmetros da série
   axis : {
     x: {
       type : 'timeseries',
       tick: {
         format: function (x) { return x.getFullYear(); },
         //count: 30,
+        // Define quais valores devem ser exibidos no eixo x
+        // Neste caso, foram escolhidos (manualmente) os pontos nos queis
+        // o Brasil tem algum relacionamento com outro país
         values: [
           '1500-01-01',
           '1611-01-01',
