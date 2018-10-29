@@ -6,7 +6,9 @@ let aux;
 let auxNode;
 
 let quant = document.querySelector('#quantElementos').value;
+let normaliza = document.querySelector('#checkboxNormaliza').checked;
 let string = "";
+let chart1;
 
 window.onload = visPadrao;
 
@@ -23,6 +25,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.querySelector('#quantElementos').addEventListener('change', function(e) {
   quant = e.target.value;
+  visFiltro(quant, string);
+}, false);
+
+document.querySelector('#checkboxNormaliza').addEventListener('change', function(e) {
+  normaliza = e.target.checked;
   visFiltro(quant, string);
 }, false);
 
@@ -43,12 +50,24 @@ function visPadrao(){
         break;
       }
     }
-    auxNode = {
-      "ID": aliados[i].ID,
-      "Allies": 100 * (Number(aliados[i].Allies) / (Number(aliados[i].Allies) + Number(e))),
-      "Enemies": 100 * (Number(e) / (Number(aliados[i].Allies) + Number(e))),
-      "Tag": aliados[i].Tag,
-      "Total": Number(e) + Number(aliados[i].Allies)
+    if (normaliza){
+      labelMsg = 'Percentage';
+      auxNode = {
+        "ID": aliados[i].ID,
+        "Allies": 100 * (Number(aliados[i].Allies) / (Number(aliados[i].Allies) + Number(e))),
+        "Enemies": 100 * (Number(e) / (Number(aliados[i].Allies) + Number(e))),
+        "Tag": aliados[i].Tag,
+        "Total": Number(e) + Number(aliados[i].Allies)
+      }
+    } else {
+      labelMsg = 'Number of conflicts';
+      auxNode = {
+        "ID": aliados[i].ID,
+        "Allies": Number(aliados[i].Allies),
+        "Enemies": Number(e),
+        "Tag": aliados[i].Tag,
+        "Total": Number(e) + Number(aliados[i].Allies)
+      }
     }
     aux.push(auxNode);
   }
@@ -63,7 +82,13 @@ function visPadrao(){
     colunaPaises.push(aux[i].ID);
   }
 
-  desenhaAgrupado();
+  if (normaliza){
+    desenhaAgrupadoNormalizado();
+    ajustaLimiteEixo();
+  } else {
+    desenhaAgrupado();
+    ajustaLimiteEixo();
+  }
 
 };
 
@@ -91,9 +116,19 @@ function visFiltro(quantidade, pais){
 
   let agrupado = document.querySelector('#checkboxEmpilhado').checked;
   if (agrupado){
-    desenhaAgrupado();
+    if (normaliza){
+      desenhaAgrupadoNormalizado();
+    } else {
+      desenhaAgrupado();
+    }
+    ajustaLimiteEixo();
   } else {
-    desenhaSeparado();
+    if (normaliza){
+      desenhaSeparadoNormalizado();
+    } else {
+      desenhaSeparado();
+    }
+    ajustaLimiteEixo();
   }
 
 
@@ -120,12 +155,24 @@ function preencheAux(pais){
           break;
         }
       }
-      auxNode = {
-        "ID": aliados[i].ID,
-        "Allies": 100 * (Number(aliados[i].Allies) / (Number(aliados[i].Allies) + Number(e))),
-        "Enemies": 100 * (Number(e) / (Number(aliados[i].Allies) + Number(e))),
-        "Tag": aliados[i].Tag,
-        "Total": Number(e) + Number(aliados[i].Allies)
+      if (normaliza){
+        labelMsg = 'Percentage';
+        auxNode = {
+          "ID": aliados[i].ID,
+          "Allies": 100 * (Number(aliados[i].Allies) / (Number(aliados[i].Allies) + Number(e))),
+          "Enemies": 100 * (Number(e) / (Number(aliados[i].Allies) + Number(e))),
+          "Tag": aliados[i].Tag,
+          "Total": Number(e) + Number(aliados[i].Allies)
+        }
+      } else {
+        labelMsg = 'Number of conflicts';
+        auxNode = {
+          "ID": aliados[i].ID,
+          "Allies": Number(aliados[i].Allies),
+          "Enemies": Number(e),
+          "Tag": aliados[i].Tag,
+          "Total": Number(e) + Number(aliados[i].Allies)
+        }
       }
       vetor.push(auxNode);
     }
@@ -137,15 +184,31 @@ function atualizaGrupo(e){
   let chart = document.querySelector('#visualizacao1');
   console.log(e.target.checked);
   if (e.target.checked){
-    desenhaAgrupado();
+    if (normaliza){
+      desenhaAgrupadoNormalizado();
+    } else {
+      desenhaAgrupado();
+    }
+    ajustaLimiteEixo();
   } else {
-    desenhaSeparado();
+    if (normaliza){
+      desenhaSeparadoNormalizado();
+    } else {
+      desenhaSeparado();
+    }
+    ajustaLimiteEixo();
+  }
+}
+
+function ajustaLimiteEixo(){
+  if (normaliza){
+    chart1.axis.max({y: 91});
   }
 }
 
 function desenhaAgrupado(){
   // Desenha a visualização
-  let chart1 = c3.generate({
+  chart1 = c3.generate({
     // Determina onde desenhar
     bindto: '#visualizacao1',
     // Define os dados que serão exibidos
@@ -188,7 +251,7 @@ function desenhaAgrupado(){
       y: {
         // Foi escolhido um texto e uma posição para o label do eixo y
         label: {
-          text: 'Percentage',
+          text: labelMsg,
           position: 'outer-middle'
         }
       },
@@ -205,14 +268,11 @@ function desenhaAgrupado(){
       show: true
     }
   });
-
-  // Limita os valores exibidos no eixo y
-  chart1.axis.max({y: 91});
 }
 
-function desenhaSeparado(){
+function desenhaAgrupadoNormalizado(){
   // Desenha a visualização
-  let chart1 = c3.generate({
+  chart1 = c3.generate({
     // Determina onde desenhar
     bindto: '#visualizacao1',
     // Define os dados que serão exibidos
@@ -223,7 +283,13 @@ function desenhaSeparado(){
         colunaInimigos
       ],
       // Tipo de série (nomeDaSerie: tipo)
-      type: 'bar'
+      type: 'bar',
+      groups: [
+        [
+          colunaAliados[0],
+          colunaInimigos[0]
+        ]
+      ]
     },
     // Define as cores
     color: {
@@ -249,7 +315,77 @@ function desenhaSeparado(){
       y: {
         // Foi escolhido um texto e uma posição para o label do eixo y
         label: {
-          text: 'Percentual',
+          text: labelMsg,
+          position: 'outer-middle'
+        }
+      },
+      rotated: true
+    },
+    // Definição da largura das barras (de diferença de votos)
+    bar: {
+      width: {
+        ratio: 0.4
+      }
+    },
+    // Customização da informação exibida ao passar o mouse sobre a visualização
+    tooltip: {
+      show: true,
+      format: {
+        value: function (value) {
+          let f = d3.format('.1f');
+          return (f(value) + '%');
+        }
+      }
+    }
+  });
+}
+
+function desenhaSeparado(){
+  // Desenha a visualização
+  chart1 = c3.generate({
+    // Determina onde desenhar
+    bindto: '#visualizacao1',
+    // Define os dados que serão exibidos
+    data: {
+      // Colunas / séries de dados: [nomeDaSerie, valor1, valor2, ..., valorN]
+      columns: [
+        colunaAliados,
+        colunaInimigos
+      ],
+      // Tipo de série (nomeDaSerie: tipo)
+      type: 'bar'
+    },
+    // Oculta linhas verticais (grid)
+    grid: {
+      y: {
+        show: false
+      }
+    },
+    // Define as cores
+    color: {
+      pattern: ['#819FF7', '#FE2E2E']
+    },
+    // Define se a legenda deve ser exibida e onde deve ser posicionada
+    legend: {
+      show: true,
+      position: 'right'
+    },
+    // Informações sobre os eixos
+    axis : {
+      // O eixo x terá o nome dos candidatos como categorias e os nomes dos
+      // candidatos podem estar quebrados em mais de uma linha
+      x: {
+        type: 'category',
+        categories: colunaPaises,
+        tick: {
+          multiline: true
+        },
+        height: 80
+      },
+      y: {
+        // Foi escolhido um texto e uma posição para o label do eixo y
+        label: {
+          text: labelMsg,
           position: 'outer-middle'
         }
       },
@@ -266,7 +402,74 @@ function desenhaSeparado(){
       show: true
     }
   });
+}
 
-  // Limita os valores exibidos no eixo y
-  chart1.axis.max({y: 91});
+function desenhaSeparadoNormalizado(){
+  // Desenha a visualização
+  chart1 = c3.generate({
+    // Determina onde desenhar
+    bindto: '#visualizacao1',
+    // Define os dados que serão exibidos
+    data: {
+      // Colunas / séries de dados: [nomeDaSerie, valor1, valor2, ..., valorN]
+      columns: [
+        colunaAliados,
+        colunaInimigos
+      ],
+      // Tipo de série (nomeDaSerie: tipo)
+      type: 'bar'
+    },
+    // Oculta linhas verticais (grid)
+    grid: {
+      y: {
+        show: false
+      }
+    },
+    // Define as cores
+    color: {
+      pattern: ['#819FF7', '#FE2E2E']
+    },
+    // Define se a legenda deve ser exibida e onde deve ser posicionada
+    legend: {
+      show: true,
+      position: 'right'
+    },
+    // Informações sobre os eixos
+    axis : {
+      // O eixo x terá o nome dos candidatos como categorias e os nomes dos
+      // candidatos podem estar quebrados em mais de uma linha
+      x: {
+        type: 'category',
+        categories: colunaPaises,
+        tick: {
+          multiline: true
+        },
+        height: 80
+      },
+      y: {
+        // Foi escolhido um texto e uma posição para o label do eixo y
+        label: {
+          text: labelMsg,
+          position: 'outer-middle'
+        }
+      },
+      rotated: true
+    },
+    // Definição da largura das barras (de diferença de votos)
+    bar: {
+      width: {
+        ratio: 0.4
+      }
+    },
+    // Customização da informação exibida ao passar o mouse sobre a visualização
+    tooltip: {
+      show: true,
+      format: {
+        value: function (value) {
+          let f = d3.format('.1f');
+          return (f(value) + '%');
+        }
+      }
+    }
+  });
 }

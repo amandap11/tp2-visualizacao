@@ -11,6 +11,10 @@
   height: 550px;
 }
 
+#visualizacao3 {
+  height: 500px;
+}
+
 h2 {
   text-align: center;
 }
@@ -36,4 +40,12 @@ h2 {
 .checkbox {
   padding-left: 10%;
   margin-bottom: 2%;
+}
+
+.c3-axis-y text {
+  font-size: 10px;
+}
+
+.c3-axis-x text {
+  font-size: 10px;
 }

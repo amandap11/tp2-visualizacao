@@ -40,8 +40,4 @@ app.get('/visualizacao3', function(request, response) {
   response.render('visualizacao3');
 });
 
-app.get('/visualizacao4', function(request, response) {
-  response.render('visualizacao4');
-});
-
 module.exports = app;

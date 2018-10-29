@@ -53,12 +53,6 @@
               Visualization 3
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link"
-                href="/visualizacao4">
-              Visualization 4
-            </a>
-          </li>
         </ul>
       </div>
       <span class="navbar-text">
@@ -69,8 +63,9 @@
     <div class="container">
       <div class="row">
         <div class="col-md-1"></div>
-        <h2 class="col-md-6">
+        <h2 class="col-md-9">
           <!-- Percentual de aliados e inimigos -->
+          <!-- Countries with more edges (involved in more conflicts) -->
           Percentage of allies and enemies
         </h2>
       </div>
@@ -80,10 +75,16 @@
     </div>
 
     <div id="select-filtros-1" class="form-group">
-      <div id="checkbox">
+      <div class="checkbox">
         <input class="form-check-input" type="checkbox" id="checkboxEmpilhado" checked>
         <label class="form-check-label" for="checkboxEmpilhado">
           Stacked bars
+        </label>
+      </div>
+      <div class="checkbox">
+        <input class="form-check-input" type="checkbox" id="checkboxNormaliza" checked>
+        <label class="form-check-label" for="checkboxNormaliza">
+          Normalize data
         </label>
       </div>
       <div>
