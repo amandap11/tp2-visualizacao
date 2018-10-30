@@ -221,7 +221,7 @@ function desenhaRelacionamentos(){
           ]
         },
         label: {
-          text: 'Region/Country',
+          text: 'Year',
           position: 'outer-right'
         },
         padding: {

@@ -37,6 +37,13 @@ h2 {
   right: 1%;
 }
 
+#radio-filtros-1 {
+  position: absolute;
+  z-index: 1;
+  top: 15%;
+  right: 1%;
+}
+
 .checkbox {
   padding-left: 10%;
   margin-bottom: 2%;
