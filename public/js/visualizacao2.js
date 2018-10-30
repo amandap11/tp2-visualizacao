@@ -9,11 +9,6 @@ document.querySelector('#quantElementos').addEventListener('change', function(e)
   ranking(e.target.value, ord);
 }, false);
 
-/*document.querySelector('#ordenado').addEventListener('change', function(e) {
-  console.log(e.target.checked);
-  ranking(quant, e.target.checked);
-}, false);*/
-
 window.onload = ranking(quant, ord);
 
 function ranking(quantidade, ordenacao){
@@ -115,10 +110,6 @@ function desenha(){
       // Tipo de série (nomeDaSerie: tipo)
       type: 'bar'
     },
-    // Define as cores
-    /*color: {
-      pattern: ['#04B404', '#DF3A01']
-    },*/
     // Define se a legenda deve ser exibida e onde deve ser posicionada
     legend: {
       show: true,

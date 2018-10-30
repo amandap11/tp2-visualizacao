@@ -49,3 +49,7 @@ h2 {
 .c3-axis-x text {
   font-size: 10px;
 }
+
+.c3-line {
+  stroke-width: 2px;
+}

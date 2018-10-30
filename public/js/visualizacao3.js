@@ -186,12 +186,16 @@ function desenhaRelacionamentos(){
     },
     // Define o tamanho dos pontos
     point: {
-      r: 1.5,
+      r: 1.2,
     },
     // Habilita o zoom
     zoom: {
         enabled: true,
         type: 'scroll',
+    },
+    // Define as cores
+    color: {
+      pattern: ['#2166ac', '#ef8a62']
     },
     // Define alguns parâmetros da série
     axis : {
@@ -253,9 +257,13 @@ function desenhaConflitos(){
       x: 'Year',
       type: 'line'
     },
+    // Define as cores
+    color: {
+      pattern: ['#2166ac', '#ef8a62']
+    },
     // Define o tamanho dos pontos
     point: {
-      r: 1.5,
+      r: 1.2,
     },
     // Habilita o zoom
     zoom: {
