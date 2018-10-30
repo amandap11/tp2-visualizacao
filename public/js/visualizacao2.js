@@ -152,7 +152,12 @@ function desenha(){
     },
     // Customização da informação exibida ao passar o mouse sobre a visualização
     tooltip: {
-      show: true
+      show: true,
+      format: {
+        value: function (value) {
+          return (value + ' years');
+        }
+      }
     }
   });
 
