@@ -60,7 +60,7 @@ function visPadrao(){
         "Total": Number(e) + Number(aliados[i].Allies)
       }
     } else {
-      labelMsg = 'Number of conflicts';
+      labelMsg = 'Number of relations';
       auxNode = {
         "ID": aliados[i].ID,
         "Allies": Number(aliados[i].Allies),
@@ -165,7 +165,7 @@ function preencheAux(pais){
           "Total": Number(e) + Number(aliados[i].Allies)
         }
       } else {
-        labelMsg = 'Number of conflicts';
+        labelMsg = 'Number of relations';
         auxNode = {
           "ID": aliados[i].ID,
           "Allies": Number(aliados[i].Allies),
