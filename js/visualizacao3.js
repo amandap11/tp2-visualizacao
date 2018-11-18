@@ -1,319 +1,131 @@
-let tipoConflito = document.querySelector('#information-type-opt1').checked;
-let tipoRelacionamento = document.querySelector('#information-type-opt2').checked;
+let quantidadePaises = ['Number of countries'];
+let nomesConflitos = [];
 
-document.querySelector('#information-type-opt1').addEventListener('change', function(e) {
-  if (e.target.checked){
-    carregaConflitos();
-  }
+let quant = document.querySelector('#quantElementos').value;
+//let ord = document.querySelector('#ordenado').checked;
+let ord = true;
+
+document.querySelector('#quantElementos').addEventListener('change', function(e) {
+  ranking(e.target.value, ord);
 }, false);
 
-document.querySelector('#information-type-opt2').addEventListener('change', function(e) {
-  if (e.target.checked){
-    carregaRelacionamentos();
-  }
-}, false);
+window.onload = ranking(quant, ord);
 
-let edgesBrasil = [];
+function ranking(quantidade, ordenacao){
 
-let linhaDoTempoBrasil = [];
-let linhaDoTempoBrasilInimigos = [];
-let linhaDoTempoBrasilAliados = [];
-let linhaDoTempoMundo = [];
+  quantidadePaises = ['Number of countries'];
+  nomesConflitos = [];
 
-let colConflitosMundo = ['World'];
-let colConflitosBrasil = ['Brazil'];
-let colRelacionamentosMundo = ['World'];
-let colRelacionamentosBrasil = ['Brazil'];
-let colYears = ['Year'];
+  let novoVetor = [];
+  let aux = null;
 
-let chart;
-
-window.onload = inicia();
-
-function inicia(){
-
-  // Seleção dos relacionamentos do Brasil
   for (let i = 0; i < edges.length; i++){
-    if (edges[i].SourceID == 'Brazil'
-        || edges[i].TargetID == 'Brazil'){
-      edgesBrasil.push(edges[i]);
-    }
-  }
-
-  // Criação de vetores para armazenar os dados dos conflitos do Brasil e do
-  // mundo no formato que poderão ser utilizados para criar as visualizações
-  for (let i = 1501; i < 2018; i++){
-    linhaDoTempoBrasil.push({
-      'ano': i,
-      'relacionamentos': 0,
-      'aliados': [],
-      'inimigos': [],
-      'conflitos': []
-    });
-    linhaDoTempoMundo.push({
-      'ano': i,
-      'relacionamentos': 0,
-      'aliados': [],
-      'inimigos': [],
-      'conflitos': []
-    });
-  }
-
-  let iAliados = 0;
-  let iInimigos = 0;
-
-  let novoConflito;
-
-  // Preenche o vetor dos relacionamentos do Brasil de acordo com a data dos
-  // conflitos e tipo de relacionamento (aliança ou inimizade)
-  for (let i = 0; i < edgesBrasil.length; i++){
-    for (let j = 0; j < linhaDoTempoBrasil.length; j++){
-      if (Number(edgesBrasil[i].year_start) <= linhaDoTempoBrasil[j].ano
-            && (Number(edgesBrasil[i].year_end) + 1) >= linhaDoTempoBrasil[j].ano){
-        linhaDoTempoBrasil[j].relacionamentos += 1;
-        novoConflito = true;
-        for (let k = 0; k < linhaDoTempoBrasil[j].conflitos.length; k++){
-          if (linhaDoTempoBrasil[j].conflitos[k] == edgesBrasil[i].conflict_name){
-            novoConflito = false;
-          }
-        }
-        if (novoConflito){
-          linhaDoTempoBrasil[j].conflitos.push(edgesBrasil[i].conflict_name);
-        }
-        if (edgesBrasil[i].relation == '+'){
-          if (edgesBrasil[i].SourceID == 'Brazil'){
-            linhaDoTempoBrasil[j].aliados.push(edgesBrasil[i].TargetID);
-          } else {
-            linhaDoTempoBrasil[j].aliados.push(edgesBrasil[i].SourceID);
-          }
-        } else {
-          if (edgesBrasil[i].SourceID == 'Brazil'){
-            linhaDoTempoBrasil[j].inimigos.push(edgesBrasil[i].TargetID);
-          } else {
-            linhaDoTempoBrasil[j].inimigos.push(edgesBrasil[i].SourceID);
-          }
-        }
+    let index = nomesConflitos.indexOf(edges[i].conflict_name);
+    if (index == -1){
+      aux = {
+        conflict_name: edges[i].conflict_name,
+        total: 2,
+        paises: [edges[i].SourceID, edges[i].TargetID]
+      };
+      nomesConflitos.push(edges[i].conflict_name);
+      novoVetor.push(aux);
+    } else {
+      let dif = 0;
+      let indexAux = novoVetor[index].paises.indexOf(edges[i].SourceID);
+      if (indexAux == -1){
+        novoVetor[index].total += 1;
+        novoVetor[index].paises.push(edges[i].SourceID);
+      }
+      indexAux = novoVetor[index].paises.indexOf(edges[i].TargetID);
+      if (indexAux == -1){
+        novoVetor[index].total += 1;
+        novoVetor[index].paises.push(edges[i].TargetID);
       }
     }
   }
 
-  // Preenche o vetor dos relacionamentos do mundo de acordo com a data dos conflitos
-  for (let i = 0; i < edges.length; i++){
-    for (let j = 0; j < linhaDoTempoMundo.length; j++){
-      if (Number(edges[i].year_start) <= linhaDoTempoMundo[j].ano
-            && Number(edges[i].year_end) >= linhaDoTempoMundo[j].ano){
-        linhaDoTempoMundo[j].relacionamentos += 1;
-        novoConflito = true;
-        for (let k = 0; k < linhaDoTempoMundo[j].conflitos.length; k++){
-          if (linhaDoTempoMundo[j].conflitos[k] == edges[i].conflict_name){
-            novoConflito = false;
-          }
-        }
-        if (novoConflito){
-          linhaDoTempoMundo[j].conflitos.push(edges[i].conflict_name);
-        }
-        if (edges[i].relation == '+'){
-          linhaDoTempoMundo[j].aliados.push(edges[i].TargetID);
-          linhaDoTempoMundo[j].aliados.push(edges[i].SourceID);
-        } else {
-          linhaDoTempoMundo[j].inimigos.push(edges[i].TargetID);
-          linhaDoTempoMundo[j].inimigos.push(edges[i].SourceID);
-        }
-      }
-    }
+  novoVetor = ordena(novoVetor);
+
+  let max = Math.min(quantidade, novoVetor.length);
+
+  nomesConflitos = [];
+  for (let i = 0; i < quantidade; i++){
+    quantidadePaises.push(novoVetor[i].total);
+    nomesConflitos.push(novoVetor[i].conflict_name);
+    console.log("Conflito: ");
+    console.log(novoVetor[i].conflict_name + ': ' + novoVetor[i].total);
+    console.log("Países: ");
+    console.log(novoVetor[i].paises);
   }
 
-  // Converte o ano para utilizá-lo no eixo x
-  for (let i = 0; i < linhaDoTempoBrasil.length; i++){
-    let stringAno = linhaDoTempoBrasil[i].ano + '-01-01';
-    colYears.push(Date.parse(stringAno));
-  }
-
-  if (tipoRelacionamento){
-    carregaRelacionamentos();
-  } else {
-    carregaConflitos();
-  }
+  desenha();
 
 }
 
-function carregaConflitos(){
-  // Cria o vetor com os números de conflitos do Brasil em formato que
-  // pode ser usado para criar as visualizações
-  for (let i = 0; i < linhaDoTempoBrasil.length; i++){
-    colConflitosBrasil.push(linhaDoTempoBrasil[i].conflitos.length);
-  }
-
-  // Cria o vetor com os números de conflitos do Mundo em formato que
-  // pode ser usado para criar as visualizações
-  for (let i = 0; i < linhaDoTempoMundo.length; i++){
-    colConflitosMundo.push(linhaDoTempoMundo[i].conflitos.length);
-  }
-
-  desenhaConflitos();
+function ordena(vetor){
+  // Ordena pela quantidade de relacionamentos
+  vetor.sort(function (a, b) {
+    if (Number(a.total) < Number(b.total)) { return 1; }
+    if (Number(a.total) > Number(b.total)) { return -1; }
+    return 0;
+  });
+  return vetor;
 }
 
-function carregaRelacionamentos(){
-  // Cria o vetor com os números de relacionamentos do Brasil em formato que
-  // pode ser usado para criar as visualizações
-  for (let i = 0; i < linhaDoTempoBrasil.length; i++){
-    colRelacionamentosBrasil.push(linhaDoTempoBrasil[i].relacionamentos);
-  }
-
-  // Cria o vetor com os números de relacionamentos no mundo em formato que
-  // pode ser usado para criar as visualizações
-  for (let i = 0; i < linhaDoTempoMundo.length; i++){
-    colRelacionamentosMundo.push(linhaDoTempoMundo[i].relacionamentos);
-  }
-
-  desenhaRelacionamentos();
-}
-
-function desenhaRelacionamentos(){
-  // Desenha da visualização
-  chart = c3.generate({
-    // Define onde a visualização será desenhada
-    bindto: '#visualizacao3',
-    // Define os dados da visualização
+function desenha(){
+  // Desenha a visualização
+  let chart1 = c3.generate({
+    // Determina onde desenhar
+    bindto: '#visualizacao2',
+    // Define os dados que serão exibidos
     data: {
+      // Colunas / séries de dados: [nomeDaSerie, valor1, valor2, ..., valorN]
       columns: [
-        colYears,
-        colRelacionamentosMundo,
-        colRelacionamentosBrasil
+        quantidadePaises
       ],
-      x: 'Year',
-      type: 'line'
+      // Tipo de série (nomeDaSerie: tipo)
+      type: 'bar'
     },
-    // Define o tamanho dos pontos
-    point: {
-      r: 1.2,
+    // Define se a legenda deve ser exibida e onde deve ser posicionada
+    legend: {
+      show: true,
+      position: 'right'
     },
-    // Habilita o zoom
-    zoom: {
-        enabled: true,
-        type: 'scroll',
-    },
-    // Define as cores
-    color: {
-      pattern: ['#2166ac', '#ef8a62']
-    },
-    // Define alguns parâmetros da série
+    // Informações sobre os eixos
     axis : {
+      // O eixo x terá o nome dos candidatos como categorias e os nomes dos
+      // candidatos podem estar quebrados em mais de uma linha
       x: {
-        type : 'timeseries',
+        type: 'category',
+        categories: nomesConflitos,
         tick: {
-          format: function (x) { return x.getFullYear(); },
-          //count: 30,
-          // Define quais valores devem ser exibidos no eixo x
-          // Neste caso, foram escolhidos (manualmente) os pontos nos queis
-          // o Brasil tem algum relacionamento com outro país
-          values: [
-            '1500-01-01',
-            '1611-01-01',
-            '1821-01-01',
-            '1834-01-01',
-            '1863-01-01',
-            '1898-01-01',
-            '1913-01-01',
-            '1938-01-01',
-            '1964-01-01',
-            '2018-01-01'
-          ]
-        },
-        label: {
-          text: 'Year',
-          position: 'outer-right'
-        },
-        padding: {
-          left: 0
+          multiline: true
         }
       },
       y: {
+        // Foi escolhido um texto e uma posição para o label do eixo y
         label: {
-          text: 'Amount of Relations',
+          text: 'Number of countries',
           position: 'outer-middle'
-        },
-        padding: {
-          top: 0,
-          bottom: 0
+        }
+      },
+      rotated: true
+    },
+    // Definição da largura das barras (de diferença de votos)
+    bar: {
+      width: {
+        ratio: 0.7
+      }
+    },
+    // Customização da informação exibida ao passar o mouse sobre a visualização
+    tooltip: {
+      show: true,
+      format: {
+        value: function (value) {
+          return (value);
         }
       }
     }
   });
-}
 
-function desenhaConflitos(){
-  // Desenha da visualização
-  chart = c3.generate({
-    // Define onde a visualização será desenhada
-    bindto: '#visualizacao3',
-    // Define os dados da visualização
-    data: {
-      columns: [
-        colYears,
-        colConflitosMundo,
-        colConflitosBrasil
-      ],
-      x: 'Year',
-      type: 'line'
-    },
-    // Define as cores
-    color: {
-      pattern: ['#2166ac', '#ef8a62']
-    },
-    // Define o tamanho dos pontos
-    point: {
-      r: 1.2,
-    },
-    // Habilita o zoom
-    zoom: {
-        enabled: true,
-        type: 'scroll',
-    },
-    // Define alguns parâmetros da série
-    axis : {
-      x: {
-        type : 'timeseries',
-        tick: {
-          format: function (x) { return x.getFullYear(); },
-          //count: 30,
-          // Define quais valores devem ser exibidos no eixo x
-          // Neste caso, foram escolhidos (manualmente) os pontos nos queis
-          // o Brasil tem algum relacionamento com outro país
-          values: [
-            '1500-01-01',
-            '1611-01-01',
-            '1821-01-01',
-            '1834-01-01',
-            '1863-01-01',
-            '1898-01-01',
-            '1913-01-01',
-            '1938-01-01',
-            '1964-01-01',
-            '2018-01-01'
-          ]
-        },
-        label: {
-          text: 'Year',
-          position: 'outer-right'
-        },
-        padding: {
-          left: 0
-        }
-      },
-      y: {
-        tick: {
-          format: d3.format("d")
-        },
-        label: {
-          text: 'Amount of Conflicts',
-          position: 'outer-middle'
-        },
-        padding: {
-          top: 0,
-          bottom: 0
-        }
-      }
-    }
-  });
 }

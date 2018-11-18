@@ -34,7 +34,7 @@
               Visualization 1
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link"
                 href="visualizacao2.html">
               Visualization 2
@@ -42,11 +42,17 @@
           </li>
           <li class="nav-item active">
             <a class="nav-link"
-                href="/visualizacao3.html">
+                href="visualizacao3.html">
               Visualization 3
               <span class="sr-only">
                 (current)
               </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+                href="visualizacao4.html">
+              Visualization 4
             </a>
           </li>
         </ul>
@@ -58,36 +64,26 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md-1"></div>
-        <h2 class="col-md-10">
-          Comparision between Brazil and the World over the years
+        <div class="col-md-2"></div>
+        <h2 class="col-md-8">
+          <!-- <i>Ranking</i> dos conflitos mais longos -->
+          Ranking of the longest conflicts
         </h2>
       </div>
       <div class="row">
-        <div id="visualizacao3"></div>
+        <div id="visualizacao2"></div>
       </div>
     </div>
 
-    <div id="radio-filtros-1" class="form-group">
-      <label for="radio-button"><b>Compare</b></label>
-      <div class="radio-button" id="radio-button">
-        <div>
-          <label>
-            <input type="radio"
-              name="information-type"
-              id="information-type-opt1"
-              value="conflict"
-              checked>Conflict
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="radio"
-              name="information-type"
-              id="information-type-opt2"
-              value="relation">Relation
-          </label>
-        </div>
+    <div id="select-filtros-2" class="form-group">
+      <div>
+        <label for="quantElementos">Number of conflicts</label>
+        <select class="form-control" id="quantElementos">
+          <option value="3">3</option>
+          <option value="5" selected>5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+        </select>
       </div>
     </div>
 
