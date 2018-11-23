@@ -65,46 +65,41 @@
     <div class="container">
       <div class="row" id="titulo">
         <div class="col-md-1"></div>
-        <h2 class="col-md-9" id="titulo-ranking">
-          <!-- <i>Ranking</i> dos conflitos mais longos -->
-          <!-- Ranking of the longest conflicts -->
-        </h2>
+        <h2 class="col-md-9" id="titulo-ranking"></h2>
       </div>
       <div class="row">
-        <div id="visualizacao2"></div>
-      </div>
-    </div>
-
-    <div id="select-filtros-2" class="form-group">
-      <div>
-        <label for="quantElementos">Number of conflicts</label>
-        <select class="form-control" id="quantElementos">
-          <option value="3">3</option>
-          <option value="5" selected>5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
-        </select>
-      </div>
-
-      <br>
-      <label for="radio-button"><b>Ranking of:</b></label>
-      <div class="radio-button" id="radio-button">
-        <div>
-          <label>
-            <input type="radio"
-              name="information-type"
-              id="information-duration"
-              value="conflict"
-              checked>Duration
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="radio"
-              name="information-type"
-              id="information-country"
-              value="countries">Number of countries
-          </label>
+        <div id="visualizacao2" class="col-md-10"></div>
+        <div class="form-group col-md-2">
+          <div>
+            <label for="quantElementos">Number of conflicts</label>
+            <select class="form-control" id="quantElementos">
+              <option value="3">3</option>
+              <option value="5" selected>5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+          </div>
+          <br>
+          <label for="radio-button"><b>Ranking of:</b></label>
+          <div id="radio-button">
+            <div>
+              <label>
+                <input type="radio"
+                  name="information-type"
+                  id="information-duration"
+                  value="conflict"
+                  checked>Duration
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio"
+                  name="information-type"
+                  id="information-country"
+                  value="countries">Number of countries
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>

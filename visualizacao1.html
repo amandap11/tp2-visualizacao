@@ -73,38 +73,39 @@
         </h2>
       </div>
       <div class="row">
-        <div id="visualizacao1"></div>
-      </div>
-    </div>
-
-    <div id="select-filtros-1" class="form-group">
-      <div class="checkbox">
-        <input class="form-check-input" type="checkbox" id="checkboxEmpilhado" checked>
-        <label class="form-check-label" for="checkboxEmpilhado">
-          Stacked bars
-        </label>
-      </div>
-      <div class="checkbox">
-        <input class="form-check-input" type="checkbox" id="checkboxNormaliza" checked>
-        <label class="form-check-label" for="checkboxNormaliza">
-          Normalize data
-        </label>
-      </div>
-      <div>
-        <input id="search-input"
-          class="form-control pesquisa"
-          type="text"
-          placeholder="Type the name of the country"
-          aria-label="Search">
-      </div>
-      <div>
-        <label for="quantElementos">Number of countries</label>
-        <select class="form-control" id="quantElementos">
-          <option value="3">3</option>
-          <option value="5">5</option>
-          <option value="10" selected>10</option>
-          <option value="15">15</option>
-        </select>
+        <div id="visualizacao1" class="col-md-10"></div>
+        <div class="col-md-2 form-group">
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxEmpilhado" checked>
+            <label class="form-check-label" for="checkboxEmpilhado">
+              Stacked bars
+            </label>
+          </div>
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxNormaliza" checked>
+            <label class="form-check-label" for="checkboxNormaliza">
+              Percentage of allies and enemies
+            </label>
+          </div>
+          <br>
+          <div>
+            <input id="search-input"
+              class="form-control"
+              type="text"
+              placeholder="Type the name of the country"
+              aria-label="Search">
+          </div>
+          <br>
+          <div>
+            <label for="quantElementos">Number of countries</label>
+            <select class="form-control" id="quantElementos">
+              <option value="3">3</option>
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="15">15</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
 
