@@ -6,25 +6,34 @@ let quant = document.querySelector('#quantElementos').value;
 
 document.querySelector('#quantElementos').addEventListener('change', function(e) {
   if (document.querySelector('#information-duration').value){
+    document.querySelector('h2').innerText
+      = "Ranking of the longest conflicts";
     rankingDuracao(e.target.value);
   } else {
+    document.querySelector('h2').innerText
+      = "Ranking of the conflicts with more countries involved";
     rankingPaises(e.target.value);
   }
 }, false);
 
 document.querySelector('#information-duration').addEventListener('change', function(e) {
   if (e.target.checked){
+    document.querySelector('h2').innerText
+      = "Ranking of the longest conflicts";
     rankingDuracao(document.querySelector('#quantElementos').value);
   }
 }, false);
 
 document.querySelector('#information-country').addEventListener('change', function(e) {
   if (e.target.checked){
+    document.querySelector('h2').innerText
+      = "Ranking of the conflicts with more countries involved";
     rankingPaises(document.querySelector('#quantElementos').value);
   }
 }, false);
 
 window.onload = rankingDuracao(quant);
+document.querySelector('h2').innerText = "Ranking of the longest conflicts";
 
 function rankingDuracao(quantidade){
 
@@ -107,10 +116,10 @@ function rankingPaises(quantidade){
   for (let i = 0; i < quantidade; i++){
     quantidadePaises.push(novoVetor[i].total);
     nomesConflitos.push(novoVetor[i].conflict_name);
-    console.log("Conflito: ");
-    console.log(novoVetor[i].conflict_name + ': ' + novoVetor[i].total);
-    console.log("Países: ");
-    console.log(novoVetor[i].paises);
+    //console.log("Conflito: ");
+    //console.log(novoVetor[i].conflict_name + ': ' + novoVetor[i].total);
+    //console.log("Países: ");
+    //console.log(novoVetor[i].paises);
   }
 
   desenhaPaises();
